@@ -1,35 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout('/layouts/boilerplate') %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hostly</title>
-</head>
+    <div class="show-page">
+        <div class="show-wrapper">
 
-<body>
-    <h3>Listing details: </h3>
-    <li>
-        <%= showListing.title %>
-    </li>
-    <li>
-        <%= showListing.description %>
-    </li>
-    <li>
-        &#8377; <%= showListing.price.toLocaleString("en-IN") %>
-    </li>
-    <li>
-        <%= showListing.location %>
-    </li>
-    <li>
-        <%= showListing.country %>
-    </li>
-    <br>
-    <a href="/listing/<%=showListing._id%>/edit">Edit this listing</a>
-    <br><br>
-    <form action="/listing/<%=showListing._id%>?_method=DELETE" method="POST">
-        <button>Delete this listing</button>
-    </form>
-</body>
+            <h2 class="show-title">Listing Details</h2>
 
-</html>
+            <div class="show-card">
+                <div class="show-img-wrapper">
+                    <img src="<%=showListing.image.url%>" alt="listing image" class="show-img">
+                </div>
+
+                <div class="show-info">
+                    <h3 class="show-listing-title">
+                        <%=showListing.title%>
+                    </h3>
+                    <p class="show-description">
+                        <%=showListing.description%>
+                    </p>
+
+                    <div class="show-meta">
+                        <span class="show-price">₹ <%=showListing.price.toLocaleString("en-IN")%> <span
+                                    class="per-night">/ night</span></span>
+                    </div>
+
+                    <div class="show-location">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <%=showListing.location%>, <%=showListing.country%>
+                    </div>
+
+                    <div class="show-actions">
+                        <a href="/listing/<%=showListing._id%>/edit" class="btn-edit">Edit Listing</a>
+                        <form action="/listing/<%=showListing._id%>?_method=DELETE" method="POST">
+                            <button class="btn-delete">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>

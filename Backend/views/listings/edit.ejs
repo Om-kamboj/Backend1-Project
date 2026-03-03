@@ -1,33 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout('/layouts/boilerplate') %>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hostly</title>
-</head>
+    <div class="form-page">
+        <div class="form-wrapper">
+            <h2 class="form-title">Edit Your Listing</h2>
+            <p class="form-subtitle">Update the details below to modify your property</p>
 
-<body>
-    <h1>Edit your listing</h1>
-    <form method="POST" action="/listing/<%=getListing._id%>?_method=PUT">
-        <input type="text" value="<%=getListing.title%>" name="getListing[title]" />
-        <br />
-        <br />
-        <textarea name="getListing[description]" id="description"><%=getListing.description%></textarea>
-        <input type="text" value="<%=getListing.image%>" name="getListing[image]" />
-        <br />
-        <br />
-        <input type="number" value="<%=getListing.price%>" name="getListing[price]" />
-        <br />
-        <br />
-        <input type="text" value="<%=getListing.country%>" name="getListing[country]" />
-        <br />
-        <br />
-        <input type="text" value="<%=getListing.location%>" name="getListing[location]" />
-        <br />
-        <br />
-        <button>Edit</button>
-    </form>
-</body>
+            <form method="POST" action="/listing/<%=getListing._id%>?_method=PUT">
 
-</html>
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" id="title" value="<%=getListing.title%>" name="listing[title]"
+                        placeholder="Enter title" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea id="description" name="listing[description]" placeholder="Enter description"
+                        class="form-control"><%=getListing.description%></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image URL</label>
+                    <input type="text" id="image" value="<%=getListing.image.url%>" name="listing[image]"
+                        placeholder="Enter image URL" class="form-control">
+                </div>
+
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <label for="price" class="form-label">Price per Night</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₹</span>
+                            <input type="number" id="price" value="<%=getListing.price%>" name="listing[price]"
+                                placeholder="0" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-md-8">
+                        <label for="country" class="form-label">Country</label>
+                        <input type="text" id="country" value="<%=getListing.country%>" name="listing[country]"
+                            placeholder="Enter country" class="form-control">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" id="location" value="<%=getListing.location%>" name="listing[location]"
+                        placeholder="Enter location" class="form-control">
+                </div>
+
+                <button class="form-submit-btn">Save Changes</button>
+
+            </form>
+        </div>
+    </div>
