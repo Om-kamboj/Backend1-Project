@@ -51,7 +51,7 @@ export const editTheListing = async (req, res) => { //getting the listing for ch
 export const putTheChanges = async (req, res) => { //changing the listing that we got for changes
     try {
         let { id } = req.params;
-        await Listing.findByIdAndUpdate(id, { ...req.body.getListing });
+        await Listing.findByIdAndUpdate(id, { ...req.body.listing });
         res.redirect(`/listing/${id}`);
     } catch (err) {
         console.log(err);
