@@ -6,7 +6,9 @@ import {
     postingNewListing,
     editTheListing,
     putTheChanges,
-    deleteTheListing
+    deleteTheListing,
+    savingReview,
+    deletingReview,
 } from '../Controllers/listing.controller.js';
 import wrapAsync from '../Middlewares/wrapAsync.js';
 import validateListing from '../Middlewares/validateListing.js';
@@ -20,5 +22,7 @@ router.post('/', validateListing, wrapAsync(postingNewListing));
 router.get('/:id/edit', wrapAsync(editTheListing));
 router.put('/:id', validateListing, wrapAsync(putTheChanges));
 router.delete('/:id', wrapAsync(deleteTheListing));
+router.post('/:id/reviews', wrapAsync(savingReview));
+router.delete('/:id/reviews/:reviewId', wrapAsync(deletingReview));
 
 export default router;

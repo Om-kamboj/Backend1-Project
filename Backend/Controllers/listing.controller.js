@@ -1,14 +1,15 @@
 import Listing from "../models/listing.model.js";
+import Review from "../models/review.model.js";
 import ExpressError from "../Middlewares/ExpressError.js";
 
-export const getAllListings = async (req, res) => { //listing all the default titles 
+export const getAllListings = async (req, res) => {
     const allListings = await Listing.find({});
     res.render("listings/index.ejs", { allListings });
 }
 
-export const getAllListingsById = async (req, res, next) => { //getting all the infos of the titles
+export const getAllListingsById = async (req, res, next) => {
     let { id } = req.params;
-    const showListing = await Listing.findById(id);
+    const showListing = await Listing.findById(id).populate('reviews');
 
     if (!showListing) {
         return next(new ExpressError(404, "Listing not found!"));
@@ -17,11 +18,11 @@ export const getAllListingsById = async (req, res, next) => { //getting all the 
     res.render("listings/show.ejs", { showListing });
 }
 
-export const postTheListning = async (req, res) => { //getting the new listing form
+export const postTheListning = async (req, res) => {
     res.render("listings/new.ejs");
 }
 
-export const postingNewListing = async (req, res, next) => { //saving the new listing in DB
+export const postingNewListing = async (req, res, next) => {
     if (!req.body.listing) {
         return next(new ExpressError(400, "Invalid listing data!"));
     }
@@ -32,7 +33,7 @@ export const postingNewListing = async (req, res, next) => { //saving the new li
     res.redirect('/listing');
 }
 
-export const editTheListing = async (req, res, next) => { //getting the listing for changes in the listing
+export const editTheListing = async (req, res, next) => {
     let { id } = req.params;
     const getListing = await Listing.findById(id);
 
@@ -43,7 +44,7 @@ export const editTheListing = async (req, res, next) => { //getting the listing 
     res.render('listings/edit.ejs', { getListing });
 }
 
-export const putTheChanges = async (req, res, next) => { //changing the listing that we got for changes
+export const putTheChanges = async (req, res, next) => {
     let { id } = req.params;
 
     if (!req.body.listing) {
@@ -63,7 +64,7 @@ export const putTheChanges = async (req, res, next) => { //changing the listing 
     res.redirect(`/listing/${id}`);
 }
 
-export const deleteTheListing = async (req, res, next) => { //deleting the existed listing
+export const deleteTheListing = async (req, res, next) => {
     let { id } = req.params;
 
     const deletedListing = await Listing.findByIdAndDelete(id);
@@ -73,4 +74,25 @@ export const deleteTheListing = async (req, res, next) => { //deleting the exist
     }
 
     res.redirect('/listing');
+}
+
+export const savingReview = async (req, res, next) => {
+    let listing = await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.review);
+
+    listing.reviews.push(newReview);
+
+    await newReview.save();
+    await listing.save();
+
+    res.redirect(`/listing/${listing._id}`);
+}
+
+export const deletingReview = async (req, res, next) => {
+    let { id, reviewId } = req.params;
+
+    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+
+    res.redirect(`/listing/${id}`);
 }

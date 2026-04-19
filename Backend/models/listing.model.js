@@ -15,7 +15,7 @@ const listingSchema = new Schema({
         maxLength: [2000, "Description must not exceed 2000 characters"],
     },
     image: {
-        filename: { 
+        filename: {
             type: String,
             default: "listingimage",
         },
@@ -43,6 +43,12 @@ const listingSchema = new Schema({
         trim: true,
         maxLength: [60, "Country must not exceed 60 characters"],
     },
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Review",
+        }
+    ]
 
 }, { timestamps: true })
 
