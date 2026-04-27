@@ -3,8 +3,19 @@ import Review from "../models/review.model.js";
 import ExpressError from "../Middlewares/ExpressError.js";
 
 export const getAllListings = async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index.ejs", { allListings });
+    const search = req.query.search || "";
+
+    const allListings = await Listing.find(
+        search ? {
+            $or: [
+                { title: { $regex: search, $options: "i" } },
+                { location: { $regex: search, $options: "i" } },
+                { country: { $regex: search, $options: "i" } },
+            ]
+        } : {}
+    );
+
+    res.render("listings/index.ejs", { allListings, search }); // ✅ search passed here
 }
 
 export const getAllListingsById = async (req, res, next) => {

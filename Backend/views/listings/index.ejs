@@ -3,22 +3,50 @@
     <div class="container-fluid px-4 mt-4 mb-4">
         <h3 class="mb-4">All Listings</h3>
 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 py-2">
-            <% for(let listing of allListings){ %>
-                <div class="col d-flex">
-                    <div class="listing-card w-100">
-                        <div class="listing-img-wrapper">
-                            <img src="<%= listing.image.url %>" class="listing-img" alt="listing_image">
-                        </div>
-                        <div class="listing-info">
-                            <h5 class="listing-title">
-                                <%= listing.title %>
-                            </h5>
-                            <p class="listing-price">₹ <%= listing.price.toLocaleString("en-IN") %> / night</p>
-                            <a href="/listing/<%= listing._id %>" class="listing-btn">View Details</a>
-                        </div>
+        <% if(search) { %>
+            <p class="search-results-info">
+                <% if(allListings.length> 0) { %>
+                    Found <strong>
+                        <%= allListings.length %>
+                    </strong> result(s) for "<strong>
+                        <%= search %>
+                    </strong>"
+                    <a href="/listing" class="search-clear-link">Clear</a>
+                    <% } else { %>
+                        No listings found for "<strong>
+                            <%= search %>
+                        </strong>"
+                        <a href="/listing" class="search-clear-link">Clear</a>
+                        <% } %>
+            </p>
+            <% } %>
+
+                <% if(allListings.length> 0) { %>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 py-2">
+                        <% for(let listing of allListings){ %>
+                            <div class="col d-flex">
+                                <div class="listing-card w-100">
+                                    <div class="listing-img-wrapper">
+                                        <img src="<%= listing.image.url %>" class="listing-img" alt="listing_image">
+                                    </div>
+                                    <div class="listing-info">
+                                        <h5 class="listing-title">
+                                            <%= listing.title %>
+                                        </h5>
+                                        <p class="listing-price">₹ <%= listing.price.toLocaleString("en-IN") %> / night
+                                        </p>
+                                        <a href="/listing/<%= listing._id %>" class="listing-btn">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
                     </div>
-                </div>
-                <% } %>
-        </div>
+                    <% } else { %>
+                        <div class="no-results">
+                            <i class="fa-solid fa-magnifying-glass no-results-icon"></i>
+                            <p class="no-results-text">No listings found</p>
+                            <a href="/listing" class="listing-btn">Clear Search</a>
+                        </div>
+                        <% } %>
+
     </div>

@@ -20,3 +20,13 @@ export const reviewSchema = Joi.object({
         comment: Joi.string().min(10).max(500).required(),
     }).required()
 });
+
+export const userSchema = Joi.object({
+    user: Joi.object({
+        email: Joi.string().email().required(),
+        username: Joi.string().min(3).max(30).required(),
+        firstName: Joi.string().min(2).max(50).required(),
+        lastName: Joi.string().min(2).max(50).required(),
+        password: Joi.string().min(6).max(100).required(),
+    }).required()
+});

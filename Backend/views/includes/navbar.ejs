@@ -1,15 +1,41 @@
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/"><i class="fa-regular fa-compass"></i></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+<nav class="navbar navbar-expand-md border-bottom sticky-top">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+            <i class="fa-regular fa-compass"></i>
+            <span class="brand-name">Hotspot</span>
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNavAltMarkup">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/listing">All Listings</a>
-                <a class="nav-link" href="/listing/new">Create new listing</a>
-            </div>
+
+            <% if(typeof search !=='undefined' ) { %>
+                <form action="/listing" method="GET" class="navbar-search mx-auto">
+                    <div class="search-wrapper">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" name="search" value="<%= search %>" placeholder="Search listings..."
+                            class="search-input">
+                        <button type="submit" class="search-btn">Search</button>
+                    </div>
+                </form>
+                <% } %>
+
+                    <div class="navbar-nav ms-auto align-items-center gap-1">
+                        <a class="nav-link" href="/">Home</a>
+                        <a class="nav-link" href="/listing">All Listings</a>
+                        <a class="nav-link" href="/listing/new">Create Listing</a>
+                        <% if(!currentUser) { %>
+                            <a class="nav-link" href="/login">Login</a>
+                            <a class="nav-link nav-register-btn" href="/register">Register</a>
+                            <% } else { %>
+                                <span class="nav-username">
+                                    <i class="fa-regular fa-circle-user"></i>
+                                    <%= currentUser.firstName %>
+                                </span>
+                                <a href="/logout" class="nav-link nav-logout-btn">Logout</a>
+                                <% } %>
+                    </div>
         </div>
     </div>
 </nav>

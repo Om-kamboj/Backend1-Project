@@ -13,17 +13,18 @@ import {
 import wrapAsync from '../Middlewares/wrapAsync.js';
 import validateListing from '../Middlewares/validateListing.js';
 import validateReview from '../Middlewares/validateReview.js';
+import isLoggedIn from '../Middlewares/isLoggedIn.js';
 
 const router = express.Router();
 
 router.get('/', wrapAsync(getAllListings));
-router.get('/new', wrapAsync(postTheListning));
+router.get('/new', isLoggedIn, wrapAsync(postTheListning));
 router.get('/:id', wrapAsync(getAllListingsById));
-router.post('/', validateListing, wrapAsync(postingNewListing));
-router.get('/:id/edit', wrapAsync(editTheListing));
-router.put('/:id', validateListing, wrapAsync(putTheChanges));
-router.delete('/:id', wrapAsync(deleteTheListing));
-router.post('/:id/reviews', validateReview, wrapAsync(savingReview));
-router.delete('/:id/reviews/:reviewId', wrapAsync(deletingReview));
+router.post('/', isLoggedIn, validateListing, wrapAsync(postingNewListing));
+router.get('/:id/edit', isLoggedIn, wrapAsync(editTheListing));
+router.put('/:id', isLoggedIn, validateListing, wrapAsync(putTheChanges));
+router.delete('/:id', isLoggedIn, wrapAsync(deleteTheListing));
+router.post('/:id/reviews', isLoggedIn, validateReview, wrapAsync(savingReview));
+router.delete('/:id/reviews/:reviewId', isLoggedIn, wrapAsync(deletingReview));
 
-export default router;  
+export default router;

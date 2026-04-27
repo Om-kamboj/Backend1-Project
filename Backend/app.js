@@ -2,16 +2,23 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './DB/db.js';
 import listinRoutes from './Routes/listing.route.js';
+import userRoutes from './Routes/user.route.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
 import methodOverride from 'method-override';
 import ejsMate from 'ejs-mate';
 import ExpressError from './Middlewares/ExpressError.js';
 import session from 'express-session';
 import flash from 'connect-flash';
 import { flashMiddleware } from './Middlewares/flash.middleware.js';
+import passport from 'passport';
+import User from './models/user.model.js';
 
 dotenv.config();
+
+const require = createRequire(import.meta.url);
+const LocalStrategy = require('passport-local').Strategy;
 
 const app = express();
 
@@ -41,12 +48,19 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 app.use(flash());
-app.use(flashMiddleware);
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+app.use(flashMiddleware);  // ✅ must be after passport and before ALL routes
 
+// ✅ routes come after all middleware
 app.get('/', (req, res) => {
     res.render('home/home.ejs');
 });
 
+app.use('/', userRoutes);
 app.use('/listing', listinRoutes);
 
 app.use((req, res, next) => {
