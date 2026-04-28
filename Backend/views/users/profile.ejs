@@ -1,0 +1,70 @@
+<% layout('/layouts/boilerplate') %>
+
+    <div class="profile-page">
+        <div class="profile-wrapper">
+
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <%= user.firstName.charAt(0).toUpperCase() %>
+                        <%= user.lastName.charAt(0).toUpperCase() %>
+                </div>
+                <div class="profile-info">
+                    <h2 class="profile-name">
+                        <%= user.firstName %>
+                            <%= user.lastName %>
+                    </h2>
+                    <p class="profile-username">@<%= user.username %>
+                    </p>
+                    <p class="profile-email"><i class="fa-regular fa-envelope"></i>
+                        <%= user.email %>
+                    </p>
+                    <p class="profile-since">
+                        <i class="fa-regular fa-calendar"></i>
+                        Member since <%= user.createdAt.toDateString() %>
+                    </p>
+                </div>
+            </div>
+
+            <div class="profile-divider"></div>
+
+            <div class="profile-section">
+                <h4 class="profile-section-title">Recently Viewed Listings</h4>
+                <% if(recentlyViewed.length> 0) { %>
+                    <div class="profile-listings">
+                        <% for(let listing of recentlyViewed) { %>
+                            <a href="/listing/<%= listing._id %>" class="profile-listing-card">
+                                <div class="profile-listing-img-wrapper">
+                                    <img src="<%= listing.image.url %>" alt="<%= listing.title %>"
+                                        class="profile-listing-img">
+                                </div>
+                                <div class="profile-listing-info">
+                                    <p class="profile-listing-title">
+                                        <%= listing.title %>
+                                    </p>
+                                    <p class="profile-listing-price">₹ <%= listing.price.toLocaleString("en-IN") %> /
+                                            night</p>
+                                    <p class="profile-listing-location">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <%= listing.location %>, <%= listing.country %>
+                                    </p>
+                                </div>
+                            </a>
+                            <% } %>
+                    </div>
+                    <% } else { %>
+                        <p class="profile-empty">No recently viewed listings yet. <a href="/listing">Browse listings</a>
+                        </p>
+                        <% } %>
+            </div>
+
+            <div class="profile-divider"></div>
+
+            <div class="profile-logout">
+                <a href="/logout" class="profile-logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
+            </div>
+
+        </div>
+    </div>

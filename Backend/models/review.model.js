@@ -15,6 +15,10 @@ const reviewSchema = new Schema({
         min: [1, "Rating must be at least 1"],
         max: [5, "Rating cannot exceed 5"],
     },
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    }
 }, { timestamps: true });
 
 const Review = mongoose.model("Review", reviewSchema);

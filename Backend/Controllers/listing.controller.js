@@ -15,16 +15,30 @@ export const getAllListings = async (req, res) => {
         } : {}
     );
 
-    res.render("listings/index.ejs", { allListings, search }); // ✅ search passed here
+    res.render("listings/index.ejs", { allListings, search });
 }
 
 export const getAllListingsById = async (req, res, next) => {
     let { id } = req.params;
-    const showListing = await Listing.findById(id).populate('reviews');
+    const showListing = await Listing.findById(id)
+        .populate({
+            path: 'reviews',
+            populate: {
+                path: 'author',
+                select: 'firstName lastName username',
+            }
+        })
+        .populate('owner');
 
     if (!showListing) {
         req.flash("error", "Listing you are looking for does not exist!");
         return res.redirect('/listing');
+    }
+
+    req.session.recentlyViewed = req.session.recentlyViewed || [];
+    if (!req.session.recentlyViewed.includes(id)) {
+        req.session.recentlyViewed.unshift(id);
+        req.session.recentlyViewed = req.session.recentlyViewed.slice(0, 5);
     }
 
     res.render("listings/show.ejs", { showListing });
@@ -40,6 +54,7 @@ export const postingNewListing = async (req, res, next) => {
     }
 
     const newListing = new Listing(req.body.listing);
+    newListing.owner = req.user._id;
     await newListing.save();
 
     req.flash("success", "New listing created successfully!");
@@ -94,6 +109,7 @@ export const deleteTheListing = async (req, res, next) => {
 export const savingReview = async (req, res, next) => {
     let listing = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);
+    newReview.author = req.user._id;
 
     listing.reviews.push(newReview);
 

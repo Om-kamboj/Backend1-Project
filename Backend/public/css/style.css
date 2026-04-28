@@ -1090,3 +1090,43 @@ body {
     background-image: none !important;
     background-size: 0% !important;
 }
+
+.review-author {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #444;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+}
+
+.review-author i {
+    color: #fe424d;
+    font-size: 0.85rem;
+}
+
+.nav-username {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #222222;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.nav-username:hover {
+    background-color: #f7f7f7;
+    border-color: #bbb;
+    color: #222;
+}
+
+.nav-username i {
+    color: #fe424d;
+    font-size: 1rem;
+}

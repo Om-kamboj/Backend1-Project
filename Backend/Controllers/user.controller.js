@@ -1,4 +1,5 @@
 import User from '../models/user.model.js';
+import Listing from '../models/listing.model.js';
 import passport from 'passport';
 
 export const getRegisterForm = async (req, res) => {
@@ -42,5 +43,21 @@ export const logoutUser = (req, res, next) => {
         if (err) return next(err);
         req.flash("success", "Logged out successfully!");
         res.redirect('/listing');
+    });
+};
+
+export const getProfile = async (req, res, next) => {
+    const recentlyViewedIds = req.session.recentlyViewed || [];
+    const recentlyViewed = await Listing.find({
+        '_id': { $in: recentlyViewedIds }
+    });
+
+    const orderedListings = recentlyViewedIds
+        .map(id => recentlyViewed.find(l => l._id.toString() === id))
+        .filter(Boolean);
+
+    res.render('users/profile.ejs', {
+        user: req.user,
+        recentlyViewed: orderedListings,
     });
 };
