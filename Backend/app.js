@@ -54,9 +54,8 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-app.use(flashMiddleware);  // ✅ must be after passport and before ALL routes
+app.use(flashMiddleware);  
 
-// ✅ routes come after all middleware
 app.get('/', (req, res) => {
     res.render('home/home.ejs');
 });

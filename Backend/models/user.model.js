@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const passportLocalMongoose = require('passport-local-mongoose').default; // ✅ access .default
+const passportLocalMongoose = require('passport-local-mongoose').default; 
 
 const Schema = mongoose.Schema;
 
