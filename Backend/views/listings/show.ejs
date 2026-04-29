@@ -5,6 +5,12 @@
 
             <h2 class="show-title">Listing Details</h2>
 
+            <!-- Live Viewer Count -->
+            <div class="viewer-count-badge">
+                <i class="fa-solid fa-eye"></i>
+                <span id="viewerCount">1</span> people viewing this right now
+            </div>
+
             <div class="show-card">
                 <div class="show-img-wrapper">
                     <img src="<%=showListing.image.url%>" alt="listing image" class="show-img">
@@ -34,16 +40,16 @@
                         <div class="booking-action">
                             <a href="/booking/<%=showListing._id%>/bookings/new" class="listing-btn">Book Now</a>
                         </div>
-                    <% } %>
-
-                    <% if(currentUser && showListing.owner && showListing.owner.equals(currentUser._id)) { %>
-                        <div class="show-actions">
-                            <a href="/listing/<%=showListing._id%>/edit" class="btn-edit">Edit Listing</a>
-                            <form action="/listing/<%=showListing._id%>?_method=DELETE" method="POST">
-                                <button class="btn-delete">Delete</button>
-                            </form>
-                        </div>
                         <% } %>
+
+                            <% if(currentUser && showListing.owner && showListing.owner.equals(currentUser._id)) { %>
+                                <div class="show-actions">
+                                    <a href="/listing/<%=showListing._id%>/edit" class="btn-edit">Edit Listing</a>
+                                    <form action="/listing/<%=showListing._id%>?_method=DELETE" method="POST">
+                                        <button class="btn-delete">Delete</button>
+                                    </form>
+                                </div>
+                                <% } %>
                 </div>
             </div>
 
@@ -142,3 +148,13 @@
 
         </div>
     </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const listingId = "<%= showListing._id %>";
+        socket.emit('joinListing', listingId);
+        socket.on('viewerCount', (count) => {
+            document.getElementById('viewerCount').innerText = count;
+        });
+    </script>
